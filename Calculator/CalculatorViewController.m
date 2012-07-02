@@ -20,6 +20,7 @@
 @implementation CalculatorViewController
 
 @synthesize display = _display;
+@synthesize history = _history;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize containsDecimal = _containsDecimal;
 @synthesize brain = _brain;
@@ -46,9 +47,10 @@
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.containsDecimal = NO;
+    self.history.text = [self.history.text stringByAppendingFormat:@"%@ Enter ", self.display.text];
 }
 
-- (IBAction)operationPressed:(id)sender 
+- (IBAction)operationPressed:(UIButton *)sender 
 {
     if (self.userIsInTheMiddleOfEnteringANumber) {
         [self enterPressed];
@@ -56,6 +58,7 @@
     NSString *operation = [sender currentTitle];
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g", result];
+    self.history.text = [self.history.text stringByAppendingFormat:@"%@ ", sender.currentTitle];
 }
 
 - (IBAction)decimalPressed:(id)sender 
@@ -69,4 +72,13 @@
     self.containsDecimal = YES;
 }
 
+- (IBAction)buttonPressedForHistory:(UIButton *)sender
+{
+    
+}
+
+- (void)viewDidUnload {
+    [self setHistory:nil];
+    [super viewDidUnload];
+}
 @end
