@@ -12,6 +12,7 @@
 @interface CalculatorViewController ()
 
 @property (nonatomic) BOOL userIsInTheMiddleOfEnteringANumber;
+@property (nonatomic) BOOL containsDecimal;
 @property (nonatomic, strong) CalculatorBrain *brain;
 
 @end
@@ -20,6 +21,7 @@
 
 @synthesize display = _display;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
+@synthesize containsDecimal = _containsDecimal;
 @synthesize brain = _brain;
 
 - (CalculatorBrain *)brain
@@ -43,6 +45,7 @@
 {
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
+    self.containsDecimal = NO;
 }
 
 - (IBAction)operationPressed:(id)sender 
@@ -53,6 +56,17 @@
     NSString *operation = [sender currentTitle];
     double result = [self.brain performOperation:operation];
     self.display.text = [NSString stringWithFormat:@"%g", result];
+}
+
+- (IBAction)decimalPressed:(id)sender 
+{
+    if (!self.userIsInTheMiddleOfEnteringANumber)
+        self.display.text = @"0.";
+    else if (!self.containsDecimal)
+        self.display.text = [self.display.text stringByAppendingString:@"."];
+    
+    self.userIsInTheMiddleOfEnteringANumber = YES;
+    self.containsDecimal = YES;
 }
 
 @end
