@@ -72,9 +72,12 @@
     self.containsDecimal = YES;
 }
 
-- (IBAction)buttonPressedForHistory:(UIButton *)sender
+- (IBAction)clear:(id)sender 
 {
+    self.display.text = @"0";
+    self.history.text = @"";
     
+    [self.brain clear];
 }
 
 - (void)viewDidUnload {
