@@ -216,13 +216,17 @@ static NSSet *operations = nil;
             NSString *op1 = [self describeOperand:stack];
             return [NSString stringWithFormat:@"%@ - %@", op1, subtrahend];
         } else if ([operation isEqualToString:@"/"]) {
-            int nextPrecedence = [self getNextPrecedence:stack];
+            int divisorPrecedence = [self getNextPrecedence:stack];
             NSString *divisor = [self describeOperand:stack];
+            int op1Precedence = [self getNextPrecedence:stack];
+            id op1 = [self describeOperand:stack];
             if (divisor) {
-                if (nextPrecedence > 1)
-                    return [NSString stringWithFormat:@"%@ / (%@)", [self describeOperand:stack], divisor];
+                if (divisorPrecedence > 1)
+                    return [NSString stringWithFormat:@"%@ / (%@)", op1, divisor];
+                else if (op1Precedence > 1)
+                    return [NSString stringWithFormat:@"(%@) / %@", op1, divisor];
                 else
-                    return [NSString stringWithFormat:@"%@ / %@", [self describeOperand:stack], divisor];
+                    return [NSString stringWithFormat:@"%@ / %@", op1, divisor];
             }
         } else if ([operation isEqualToString:@"sin"]) {
             return [NSString stringWithFormat:@"sin(%@)", [self describeOperand:stack]];
