@@ -62,7 +62,8 @@ static NSSet *operations = nil;
 - (double)performOperation:(NSString *)operation
 {
     [self.programStack addObject:operation];
-    return [[self class] runProgram:self.program];
+    //return [[self class] runProgram:self.program];
+    return 0;
 }
 
 - (void)clear
@@ -135,7 +136,7 @@ static NSSet *operations = nil;
             
             if ([element isKindOfClass:[NSString class]] &&
                 ![self isOperation:element]) {
-                [stack replaceObjectAtIndex:i withObject:[variableValues objectForKey:element]];
+                [stack replaceObjectAtIndex:i withObject:([variableValues objectForKey:element]) ? [variableValues objectForKey:element] : [NSNumber numberWithDouble:0]];
             }
         }
     }
@@ -237,7 +238,7 @@ static NSSet *operations = nil;
         } else if ([operation isEqualToString:@"π"]) {
             return @"π";
         } else {
-            return [NSString stringWithFormat:@"(%@)", topOfStack];
+            return [NSString stringWithFormat:@"%@", topOfStack];
         }
     }
     
