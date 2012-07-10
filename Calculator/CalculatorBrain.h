@@ -11,6 +11,7 @@
 @interface CalculatorBrain : NSObject
 
 - (void)pushOperand:(double)operand;
+- (void)pushVariableOperand:(NSString *)variable;
 - (double)performOperation:(NSString *)operation;
 - (void)clear;
 
@@ -27,5 +28,10 @@
 // if the last thing done in the program was pushOperand:, this returns that operand
 // if the last thing done in the program was performOperation:, this evaluates it (recursively)
 + (double)runProgram:(id)program;
+
++ (double)runProgram:(id)program 
+ usingVariableValues:(NSDictionary *)variableValues;
+
++ (NSSet *)variablesUsedInProgram:(id)program;
 
 @end

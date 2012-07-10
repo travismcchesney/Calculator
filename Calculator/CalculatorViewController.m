@@ -21,6 +21,7 @@
 
 @synthesize display = _display;
 @synthesize history = _history;
+@synthesize description = _description;
 @synthesize userIsInTheMiddleOfEnteringANumber = _userIsInTheMiddleOfEnteringANumber;
 @synthesize containsDecimal = _containsDecimal;
 @synthesize brain = _brain;
@@ -47,7 +48,7 @@
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.containsDecimal = NO;
-    self.history.text = [self.history.text stringByAppendingFormat:@"%@ Enter ", self.display.text];
+    self.history.text = [self.history.text stringByAppendingFormat:@"%@ ↵ ", self.display.text];
 }
 
 - (IBAction)operationPressed:(UIButton *)sender 
@@ -76,12 +77,23 @@
 {
     self.display.text = @"0";
     self.history.text = @"";
+    self.description.text = @"";
     
     [self.brain clear];
 }
 
+- (IBAction)describeProgram:(id)sender 
+{
+    NSString *description = [[self.brain class] descriptionOfProgram:self.brain.program];
+    
+    description = [description stringByReplacingCharactersInRange:[description rangeOfString:@"," options:NSBackwardsSearch] withString:@""];
+    self.description.text = description;
+
+}
+
 - (void)viewDidUnload {
     [self setHistory:nil];
+    [self setDescription:nil];
     [super viewDidUnload];
 }
 @end
