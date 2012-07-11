@@ -20,12 +20,14 @@ static NSSet *operations = nil;
 
 @synthesize programStack = _programStack;
 
+// Get the set of all defined operations.
 + (NSSet *)operations
 {
     if (!operations) operations = [[NSSet alloc] initWithObjects:@"+",@"*",@"-",@"/",@"sin",@"cos",@"√",@"π", nil];
     return operations;
 }
 
+// Get the program stack.
 - (NSMutableArray *)programStack
 {
     // lazily instantiate
@@ -43,15 +45,13 @@ static NSSet *operations = nil;
     return [self.programStack copy];
 }
 
-// just pushes the operand onto our stack internal data structure
-
+// just pushes the operand onto our stack internal data structure.
 - (void)pushOperand:(double)operand
 {
     [self.programStack addObject:[NSNumber numberWithDouble:operand]];
 }
 
-// Push a variable operand onto our stack
-
+// Push a variable operand onto our stack.
 - (void)pushVariableOperand:(NSString *)variable
 {
     if (![variable isEqualToString:@"sin"] &&
@@ -59,13 +59,23 @@ static NSSet *operations = nil;
         [self.programStack addObject:variable];
 }
 
+// Pop the top item off of the program stack.
+- (id)popFromStack
+{
+    id topOfStack = [self.programStack lastObject];
+    if (topOfStack) [self.programStack removeLastObject];
+    
+    return topOfStack;
+}
+
+// Add the operation to the program stack.
 - (double)performOperation:(NSString *)operation
 {
     [self.programStack addObject:operation];
-    //return [[self class] runProgram:self.program];
     return 0;
 }
 
+// Clear the program stack.
 - (void)clear
 {
     [self.programStack removeAllObjects];
@@ -74,7 +84,6 @@ static NSSet *operations = nil;
 // if the top thing on the passed stack is an operand, return it
 // if the top thing on the passed stack is an operation, evaluate it (recursively)
 // does not crash (but returns 0) if stack contains objects other than NSNumber or NSString
-
 + (double)popOperandOffProgramStack:(NSMutableArray *)stack
 {
     double result = 0;
@@ -124,6 +133,8 @@ static NSSet *operations = nil;
     return [self runProgram:program usingVariableValues:nil];
 }
 
+// Run the specified program with the supplied dictionary of variables.
+// Replace the variables in the program stack with the values from the dictionary.
 + (double)runProgram:(id)program usingVariableValues:(NSDictionary *)variableValues
 {
     NSMutableArray *stack;
@@ -144,6 +155,7 @@ static NSSet *operations = nil;
     return [self popOperandOffProgramStack:stack];
 }
 
+// Return a set with all of the variables used in the specified program.
 + (NSSet *)variablesUsedInProgram:(id)program
 {
     NSMutableArray *variablesUsed = [[NSMutableArray alloc] init];
@@ -169,7 +181,15 @@ static NSSet *operations = nil;
         return nil;
 }
 
+// Describe the program stack (ex: (1+2)*4).
 + (NSString *)descriptionOfProgram:(id)program
+{
+    NSString *description = [self describeProgram:program];
+    return [description stringByReplacingCharactersInRange:[description rangeOfString:@"," options:NSBackwardsSearch] withString:@""];
+}
+
+// Recursively describe each of the operation segments in the program stack.
++ (NSString *)describeProgram:(id)program
 {
     NSMutableArray *stack;
     NSString *description;
@@ -181,9 +201,12 @@ static NSSet *operations = nil;
     
     description = [NSString stringWithFormat:@"%@, ", [self describeOperand:stack]];
     
-    return [description stringByAppendingString:[self descriptionOfProgram:stack]];
+    return [description stringByAppendingString:[self describeProgram:stack]];
 }
 
+// Recursively describe each of the operands in the specified stack.
+// Determine the operation precedence of the left and right operands to ensure
+// the parentheses are placed correctly.
 + (NSString *)describeOperand:(NSMutableArray *)stack
 {
     id topOfStack = [stack lastObject];
@@ -197,7 +220,6 @@ static NSSet *operations = nil;
     {
         NSString *operation = topOfStack;
         if ([operation isEqualToString:@"+"]) {
-            
             id op2 = [self describeOperand:stack];
             id op1 = [self describeOperand:stack];
             return [NSString stringWithFormat:@"%@ + %@", op1, op2];
@@ -245,11 +267,13 @@ static NSSet *operations = nil;
     return @"0";
 }
 
+// Determine if an element is an opertion (/, *, +, -) or not.
 + (BOOL)isOperation:(id)element
 {
     return [[self operations] containsObject:element];
 }
 
+// Get the precedence of the next operand on the stack.
 + (int)getNextPrecedence:(NSArray *)stack
 {
     id topOfStack = [stack lastObject];

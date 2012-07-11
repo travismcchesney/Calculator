@@ -12,6 +12,7 @@
 
 - (void)pushOperand:(double)operand;
 - (void)pushVariableOperand:(NSString *)variable;
+- (id)popFromStack;
 - (double)performOperation:(NSString *)operation;
 - (void)clear;
 

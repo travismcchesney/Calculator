@@ -28,15 +28,20 @@
 @synthesize brain = _brain;
 @synthesize testVariableValues = _testVariableValues;
 
+// Get the CalculatorBrain instanace.  Lazy instantiation.
 - (CalculatorBrain *)brain
 {
     if (!_brain) _brain = [[CalculatorBrain alloc] init];
     return _brain;
 }
 
+// When a digit is pressed, use the current title to determine which digit, and
+// update the display with that digit.
 - (IBAction)digitPressed:(UIButton *)sender 
 {
     NSString *digit = sender.currentTitle;
+    // If a number is being entered, append it to the display.
+    // Otherwise, set the display to the number.
     if (self.userIsInTheMiddleOfEnteringANumber) {
         self.display.text = [self.display.text stringByAppendingString:digit];
     } else {
@@ -45,29 +50,33 @@
     }
 }
 
+// When enter is pressed, push the operand into the CalculatorBrain.
+// The user is no longer entering a number.
+// Update the display to reflect the push.
 - (IBAction)enterPressed 
 {
     [self.brain pushOperand:[self.display.text doubleValue]];
     self.userIsInTheMiddleOfEnteringANumber = NO;
     self.containsDecimal = NO;
     [self updateDisplay];
-    //self.history.text = [self.history.text stringByAppendingFormat:@"%@ ↵ ", self.display.text];
-    //[self describeProgram:nil];
 }
 
+// When an operation is pressed, simulate an enter press if the user was in
+// the middle of entering a number.
+// Request the CalculatorBrain to perform the operation, and then update
+// the display.
 - (IBAction)operationPressed:(UIButton *)sender 
 {
     if (self.userIsInTheMiddleOfEnteringANumber) {
         [self enterPressed];
     }
     NSString *operation = [sender currentTitle];
-    double result = [self.brain performOperation:operation];
+    [self.brain performOperation:operation];
     [self updateDisplay];
-    //self.display.text = [NSString stringWithFormat:@"%g", result];
-    //self.history.text = [self.history.text stringByAppendingFormat:@"%@ ", sender.currentTitle];
-    //[self describeProgram:nil];
 }
 
+// When a decimal is pressed, determine if there is already a decimal in the 
+// number, and if it's the first digit in the display.  Set or append accordingly.
 - (IBAction)decimalPressed:(id)sender 
 {
     if (!self.userIsInTheMiddleOfEnteringANumber)
@@ -79,28 +88,28 @@
     self.containsDecimal = YES;
 }
 
+// When clear is pressed, clear the display, description, and CalculatorBrain.
 - (IBAction)clear:(id)sender 
 {
     self.display.text = @"0";
-    //self.history.text = @"";
     self.description.text = @"";
     
     [self.brain clear];
 }
 
-- (void)describeProgram:(id)sender 
+// Describe the program using the CalculatorBrain's description API.
+- (void)describeProgram
 {
     NSString *description = [[self.brain class] descriptionOfProgram:self.brain.program];
-    
-    description = [description stringByReplacingCharactersInRange:[description rangeOfString:@"," options:NSBackwardsSearch] withString:@""];
     self.description.text = description;
-
 }
 
+// Update the display text by running the program in the CalculatorBrain.
+// Update the variables display by evaluating which variables are defined.
 - (void)updateDisplay
 {
     self.display.text = [NSString stringWithFormat:@"%g", [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues]];
-    [self describeProgram:nil];
+    [self describeProgram];
     NSSet *variableSet = [CalculatorBrain variablesUsedInProgram:self.brain.program];
     self.variables.text = @"";
     for (NSString *var in variableSet) {
@@ -108,26 +117,45 @@
     }
 }
 
+// Set the variables for test 1.
 - (IBAction)test1:(id)sender
 {
     self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:5], @"x", [NSNumber numberWithDouble:10], @"y", [NSNumber numberWithDouble:20], @"z", nil];
     [self updateDisplay];
 }
 
+// Set the variables for test 2.
 - (IBAction)test2:(id)sender 
 {
     self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1], @"x", [NSNumber numberWithDouble:2], @"y", [NSNumber numberWithDouble:3], @"z", nil];
     [self updateDisplay];
 }
 
+// Set the variables for test 3.
 - (IBAction)test3:(id)sender 
 {
     self.testVariableValues = nil;
     [self updateDisplay];
 }
 
+// Remove the last character in the display, or the last item on the stack if the display is empty.
+- (IBAction)undo:(id)sender 
+{
+    if (self.userIsInTheMiddleOfEnteringANumber)
+        self.display.text = [self.display.text substringToIndex:[self.display.text length] - 1];
+    else {
+        [self.brain popFromStack];
+        [self updateDisplay];
+    }
+    
+    if (self.display.text.length == 0) {
+        self.userIsInTheMiddleOfEnteringANumber = NO;
+        [self updateDisplay];
+    }
+
+}
+
 - (void)viewDidUnload {
-    //[self setHistory:nil];
     [self setDescription:nil];
     [self setVariables:nil];
     [super viewDidUnload];
