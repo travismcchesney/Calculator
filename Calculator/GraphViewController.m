@@ -9,7 +9,7 @@
 #import "GraphViewController.h"
 #import "GraphView.h"
 
-@interface GraphViewController ()
+@interface GraphViewController () <GraphViewDataSource>
 @property (nonatomic, weak) IBOutlet GraphView *graphView;
 @end
 
@@ -17,6 +17,11 @@
 
 @synthesize graphView = _graphView;
 @synthesize descriptionToGraph = _descriptionToGraph;
+
+- (NSString *)descriptionForGraphView:(GraphView *)sender
+{
+    return self.descriptionToGraph;
+}
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
