@@ -110,32 +110,6 @@
 {
     self.display.text = [NSString stringWithFormat:@"%g", [CalculatorBrain runProgram:self.brain.program usingVariableValues:self.testVariableValues]];
     [self describeProgram];
-    NSSet *variableSet = [CalculatorBrain variablesUsedInProgram:self.brain.program];
-    self.variables.text = @"";
-    for (NSString *var in variableSet) {
-        self.variables.text = [self.variables.text stringByAppendingString:[NSString stringWithFormat:@"%@ = %@ ", var, [[self testVariableValues] valueForKey:var]]];
-    }
-}
-
-// Set the variables for test 1.
-- (IBAction)test1:(id)sender
-{
-    self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:5], @"x", [NSNumber numberWithDouble:10], @"y", [NSNumber numberWithDouble:20], @"z", nil];
-    [self updateDisplay];
-}
-
-// Set the variables for test 2.
-- (IBAction)test2:(id)sender 
-{
-    self.testVariableValues = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithDouble:1], @"x", [NSNumber numberWithDouble:2], @"y", [NSNumber numberWithDouble:3], @"z", nil];
-    [self updateDisplay];
-}
-
-// Set the variables for test 3.
-- (IBAction)test3:(id)sender 
-{
-    self.testVariableValues = nil;
-    [self updateDisplay];
 }
 
 // Remove the last character in the display, or the last item on the stack if the display is empty.
