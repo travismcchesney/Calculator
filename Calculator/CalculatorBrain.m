@@ -72,7 +72,7 @@ static NSSet *operations = nil;
 - (double)performOperation:(NSString *)operation
 {
     [self.programStack addObject:operation];
-    return 0;
+    return [[CalculatorBrain class] runProgram:[self program]];
 }
 
 // Clear the program stack.
