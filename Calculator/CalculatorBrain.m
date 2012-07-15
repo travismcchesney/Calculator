@@ -185,7 +185,7 @@ static NSSet *operations = nil;
 + (NSString *)descriptionOfProgram:(id)program
 {
     NSString *description = [self describeProgram:program];
-    return [description stringByReplacingCharactersInRange:[description rangeOfString:@"," options:NSBackwardsSearch] withString:@""];
+    return (description.length > 0) ? [description stringByReplacingCharactersInRange:[description rangeOfString:@"," options:NSBackwardsSearch] withString:@""] : @"";
 }
 
 // Recursively describe each of the operation segments in the program stack.
