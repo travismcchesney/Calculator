@@ -11,6 +11,8 @@
 
 @implementation GraphView
 
+@synthesize dataSource = _dataSource;
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
@@ -22,7 +24,7 @@
 
 - (void)drawRect:(CGRect)rect
 {
-    [[AxesDrawer class] drawAxesInRect:rect originAtPoint:CGPointMake(rect.size.width / 2, rect.size.height / 2) scale:1.0];
+    [[AxesDrawer class] drawAxesInRect:rect originAtPoint:CGPointMake(rect.size.width / 2, rect.size.height / 2) scale:2.0];
 }
 
 @end

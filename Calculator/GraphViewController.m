@@ -16,6 +16,7 @@
 @implementation GraphViewController
 
 @synthesize graphView = _graphView;
+@synthesize descriptionOfProgram = _descriptionOfProgram;
 @synthesize descriptionToGraph = _descriptionToGraph;
 
 - (NSString *)descriptionForGraphView:(GraphView *)sender
@@ -35,11 +36,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+	self.descriptionOfProgram.text = self.descriptionToGraph;
 }
 
 - (void)viewDidUnload
 {
+    [self setDescriptionOfProgram:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
