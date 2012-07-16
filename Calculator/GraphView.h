@@ -11,7 +11,7 @@
 @class GraphView;
 
 @protocol GraphViewDataSource
-- (NSString *)descriptionForGraphView:(GraphView *)sender;
+- (float)resultForVariables:(NSDictionary *)variables;
 @end
 
 @interface GraphView : UIView

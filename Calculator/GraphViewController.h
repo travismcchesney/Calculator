@@ -11,6 +11,6 @@
 @interface GraphViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UILabel *descriptionOfProgram;
-@property (nonatomic, strong) NSString *descriptionToGraph;
+@property (nonatomic, strong) NSArray *programToGraph;
 
 @end

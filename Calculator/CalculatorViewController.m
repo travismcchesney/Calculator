@@ -16,7 +16,7 @@
 @property (nonatomic) BOOL containsDecimal;
 @property (nonatomic, strong) CalculatorBrain *brain;
 @property (nonatomic, strong) NSDictionary *testVariableValues;
-@property (nonatomic, strong) NSString *descriptionForGraph;
+@property (nonatomic, strong) NSArray *programForGraph;
 
 @end
 
@@ -29,7 +29,7 @@
 @synthesize containsDecimal = _containsDecimal;
 @synthesize brain = _brain;
 @synthesize testVariableValues = _testVariableValues;
-@synthesize descriptionForGraph = _descriptionForGraph;
+@synthesize programForGraph = _programForGraph;
 
 // Get the CalculatorBrain instanace.  Lazy instantiation.
 - (CalculatorBrain *)brain
@@ -102,14 +102,14 @@
 
 - (IBAction)graph:(id)sender 
 {
-    self.descriptionForGraph = [[self.brain class] descriptionOfProgram:self.brain.program];
+    self.programForGraph = self.brain.program;
     [self performSegueWithIdentifier:@"ShowGraph" sender:self];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
     if ([segue.identifier isEqualToString:@"ShowGraph"]) {
-        [segue.destinationViewController setDescriptionToGraph:self.descriptionForGraph];
+        [segue.destinationViewController setProgramToGraph:self.programForGraph];
     }
 }
 
