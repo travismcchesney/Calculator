@@ -86,6 +86,13 @@
     }
 }
 
+- (void)tripleTap:(UITapGestureRecognizer *)gesture
+{
+    if (gesture.state == UIGestureRecognizerStateEnded) {
+        self.origin = [gesture locationInView:self];
+    }
+}
+
 - (void)drawRect:(CGRect)rect
 {    
     [[AxesDrawer class] drawAxesInRect:rect originAtPoint:self.origin scale:self.scale];

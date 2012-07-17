@@ -58,6 +58,11 @@
     // enable pinch gestures in the FaceView using its pinch: handler
     [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];
     [self.graphView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pan:)]];
+    
+    UITapGestureRecognizer *tripleTapRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(tripleTap:)];
+    tripleTapRecognizer.numberOfTapsRequired = 3;
+    
+    [self.graphView addGestureRecognizer:tripleTapRecognizer];
     self.graphView.dataSource = self;
 }
 
