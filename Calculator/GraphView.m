@@ -34,21 +34,39 @@
     return self;
 }
 
-- (float) scale
+- (float)scale
 {
     if (!_scale) _scale = DEFAULT_SCALE;
     return _scale;
 }
 
-- (void) setOrigin:(CGPoint)origin
+- (void)setScale:(float)scale
+{
+    if (scale != _scale) {
+        _scale = scale;
+        [self setNeedsDisplay];
+    }
+    
+}
+
+- (void)setOrigin:(CGPoint)origin
 {
     _origin = origin;
-    _originIsInitialized = YES;
+}
+
+- (void)pinch:(UIPinchGestureRecognizer *)gesture
+{
+    if ((gesture.state == UIGestureRecognizerStateChanged) ||
+        (gesture.state == UIGestureRecognizerStateEnded)) {
+        self.scale *= gesture.scale; // adjust our scale
+        gesture.scale = 1;           // reset gestures scale to 1 (so future changes are incremental, not cumulative)
+    }
 }
 
 - (void)drawRect:(CGRect)rect
-{
-    if (!self.originIsInitialized) self.origin = CGPointMake(rect.size.width / 2, rect.size.height / 2);
+{    
+    if (!self.originIsInitialized) self.origin = CGPointMake(rect.size.width / 2, rect.size.height / 2); //CGPointMake(scaledWidth / 2, scaledHeight / 2);
+    
     
     [[AxesDrawer class] drawAxesInRect:rect originAtPoint:self.origin scale:self.scale];
     
@@ -61,14 +79,23 @@
     
     for (float i = rect.origin.x; i < rect.size.width; ++i)
     {
-        x = (i - self.origin.x);
+        // Translate x into translated and scaled value 
+        x = (i - self.origin.x) / self.scale;
+        
+        // Set the value of x into the variables dictionary
         variables = [[NSDictionary alloc] initWithObjectsAndKeys:[NSNumber numberWithFloat:x], @"x", nil]; 
         
+        // Calculate the result of the datasource calculation using the variables dictionary
         result = [self.dataSource resultForVariables:variables];
         
-        result *= -1;
+        // Translate the result into actual pixels
+        result *= -1 * self.scale;
         result += self.origin.y;
+        
+        // Translate x back to actual pixels
+        x *= self.scale;
         x += self.origin.x;
+
         
         if (!startPointInitialized){
             CGContextMoveToPoint(context, x, result);
