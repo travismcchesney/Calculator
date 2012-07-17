@@ -25,11 +25,21 @@
 @synthesize scale = _scale;
 @synthesize originIsInitialized = _originIsInitialized;
 
+- (void)setup
+{
+    self.contentMode = UIViewContentModeRedraw; // if our bounds changes, redraw ourselves
+}
+
+- (void)awakeFromNib
+{
+    [self setup]; // get initialized when we come out of a storyboard
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-
+        [self setup];
     }
     return self;
 }
@@ -47,6 +57,11 @@
         [self setNeedsDisplay];
     }
     
+}
+
+- (void)resetOrigin
+{
+    self.originIsInitialized = NO;
 }
 
 - (CGPoint)origin

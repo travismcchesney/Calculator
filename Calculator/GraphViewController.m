@@ -68,7 +68,8 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+    [self.graphView resetOrigin];
+    return YES;
 }
 
 @end

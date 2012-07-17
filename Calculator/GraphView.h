@@ -16,6 +16,8 @@
 
 @interface GraphView : UIView
 
+- (void)resetOrigin;
+
 @property (nonatomic, weak) IBOutlet id <GraphViewDataSource> dataSource;
 
 @end
