@@ -18,7 +18,7 @@
 @implementation GraphView
 
 
-#define DEFAULT_SCALE 1.0
+#define DEFAULT_SCALE 10.0
 
 @synthesize dataSource = _dataSource;
 @synthesize origin = _origin;
@@ -49,9 +49,21 @@
     
 }
 
+- (CGPoint)origin
+{
+    if (!self.originIsInitialized)
+    {
+        _origin = CGPointMake(self.bounds.size.width / 2, self.bounds.size.height / 2);
+        self.originIsInitialized = YES;
+    }
+    
+    return _origin;
+}
+
 - (void)setOrigin:(CGPoint)origin
 {
     _origin = origin;
+    [self setNeedsDisplay];
 }
 
 - (void)pinch:(UIPinchGestureRecognizer *)gesture
@@ -63,11 +75,19 @@
     }
 }
 
+- (void)pan:(UIPanGestureRecognizer *)gesture
+{
+    if ((gesture.state == UIGestureRecognizerStateChanged) ||
+        (gesture.state == UIGestureRecognizerStateEnded)) {
+        CGPoint translation = [gesture translationInView:self];
+        self.origin = CGPointMake(self.origin.x + translation.x, self.origin.y + translation.y);
+        
+        [gesture setTranslation:CGPointZero inView:self];
+    }
+}
+
 - (void)drawRect:(CGRect)rect
 {    
-    if (!self.originIsInitialized) self.origin = CGPointMake(rect.size.width / 2, rect.size.height / 2); //CGPointMake(scaledWidth / 2, scaledHeight / 2);
-    
-    
     [[AxesDrawer class] drawAxesInRect:rect originAtPoint:self.origin scale:self.scale];
     
     CGContextRef context = UIGraphicsGetCurrentContext();

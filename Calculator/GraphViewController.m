@@ -57,7 +57,7 @@
     _graphView = graphView;
     // enable pinch gestures in the FaceView using its pinch: handler
     [self.graphView addGestureRecognizer:[[UIPinchGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pinch:)]];
-    //[self.faceView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handleHappinessGesture:)]];  // gesture to modify our Model
+    [self.graphView addGestureRecognizer:[[UIPanGestureRecognizer alloc] initWithTarget:self.graphView action:@selector(pan:)]];
     self.graphView.dataSource = self;
 }
 
