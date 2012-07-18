@@ -118,8 +118,8 @@
     float x;
     NSDictionary *variables;
     BOOL startPointInitialized = NO;
-    
-    for (float i = rect.origin.x; i < rect.size.width; ++i)
+
+    for (float i = rect.origin.x; i < rect.size.width; i += 1 / self.contentScaleFactor)
     {
         // Translate x into translated and scaled value 
         x = (i - self.origin.x) / self.scale;
