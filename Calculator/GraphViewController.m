@@ -24,6 +24,7 @@
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize toolbar = _toolbar;
 
+
 - (void)setSplitViewBarButtonItem:(UIBarButtonItem *)splitViewBarButtonItem
 {
     if (_splitViewBarButtonItem != splitViewBarButtonItem) {
@@ -71,6 +72,36 @@
     [self setDescriptionOfProgram:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    // Get the stored data before the view loads
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    float originX = [defaults floatForKey:@"GraphViewOriginX"];
+    float originY = [defaults floatForKey:@"GraphViewOriginY"];
+    float scale = [defaults floatForKey:@"GraphViewScale"];
+    
+    if (originX && originY)
+        self.graphView.origin = CGPointMake(originX, originY);
+    if (scale)
+        self.graphView.scale = scale;
+    
+    [super viewWillAppear:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    // Store the data
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    
+    [defaults setFloat:self.graphView.origin.x forKey:@"GraphViewOriginX"];
+    [defaults setFloat:self.graphView.origin.y forKey:@"GraphViewOriginY"];
+    [defaults setFloat:self.graphView.scale forKey:@"GraphViewScale"];
+    
+    [defaults synchronize];
 }
 
 - (void)setGraphView:(GraphView *)graphView

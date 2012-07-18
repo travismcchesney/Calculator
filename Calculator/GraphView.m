@@ -8,10 +8,9 @@
 
 #import "GraphView.h"
 #import "AxesDrawer.h"
+#include <math.h>
 
 @interface GraphView ()
-@property (nonatomic) CGPoint origin;
-@property (nonatomic) float scale;
 @property (nonatomic) BOOL originIsInitialized;
 @end
 
@@ -78,6 +77,7 @@
 - (void)setOrigin:(CGPoint)origin
 {
     _origin = origin;
+    self.originIsInitialized = YES;
     [self setNeedsDisplay];
 }
 
@@ -130,22 +130,24 @@
         // Calculate the result of the datasource calculation using the variables dictionary
         result = [self.dataSource resultForVariables:variables];
         
-        // Translate the result into actual pixels
-        result *= -1 * self.scale;
-        result += self.origin.y;
-        
-        // Translate x back to actual pixels
-        x *= self.scale;
-        x += self.origin.x;
+        if (!isnan(result)) {
+            // Translate the result into actual pixels
+            result *= -1 * self.scale;
+            result += self.origin.y;
+            
+            // Translate x back to actual pixels
+            x *= self.scale;
+            x += self.origin.x;
 
-        
-        if (!startPointInitialized){
-            CGContextMoveToPoint(context, x, result);
-            startPointInitialized = YES;
+            
+            if (!startPointInitialized){
+                CGContextMoveToPoint(context, x, result);
+                startPointInitialized = YES;
+            }
+            CGContextAddLineToPoint(context, x, result);
+            
+            //CGContextFillRect(context, CGRectMake(x,result,1,1));
         }
-        CGContextAddLineToPoint(context, x, result);
-        
-        //CGContextFillRect(context, CGRectMake(x,result,1,1));
     }
     
     CGContextStrokePath(context);

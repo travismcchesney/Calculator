@@ -200,7 +200,7 @@
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
-    return YES;
+    return (UIInterfaceOrientationIsPortrait(interfaceOrientation) || [self splitViewGraphViewController] != nil);
 }
 
 - (void)viewDidUnload {

@@ -18,6 +18,8 @@
 
 - (void)resetOrigin;
 
+@property (nonatomic) CGPoint origin;
+@property (nonatomic) float scale;
 @property (nonatomic, weak) IBOutlet id <GraphViewDataSource> dataSource;
 
 @end
