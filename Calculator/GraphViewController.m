@@ -21,6 +21,7 @@
 @synthesize graphView = _graphView;
 @synthesize descriptionOfProgram = _descriptionOfProgram;
 @synthesize programToGraph = _programToGraph;
+@synthesize graphMethodSwitch = _graphMethodSwitch;
 @synthesize splitViewBarButtonItem = _splitViewBarButtonItem;
 @synthesize toolbar = _toolbar;
 
@@ -34,6 +35,12 @@
         self.toolbar.items = toolbarItems;
         _splitViewBarButtonItem = splitViewBarButtonItem;
     }
+}
+
+- (IBAction)switchGraphMethod:(UISwitch *)sender 
+{
+    if (sender.on) self.graphView.graphMethod = Line;
+    else self.graphView.graphMethod = Pixel;
 }
 
 - (NSArray *)programForGraphView:(GraphView *)sender
@@ -70,6 +77,7 @@
 - (void)viewDidUnload
 {
     [self setDescriptionOfProgram:nil];
+    [self setGraphMethodSwitch:nil];
     [super viewDidUnload];
     // Release any retained subviews of the main view.
 }
@@ -116,6 +124,7 @@
     
     [self.graphView addGestureRecognizer:tripleTapRecognizer];
     self.graphView.dataSource = self;
+    self.graphView.graphMethod = self.graphMethodSwitch.on ? Line : Pixel;
 }
 
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation

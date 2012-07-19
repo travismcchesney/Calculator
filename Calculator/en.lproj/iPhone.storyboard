@@ -189,7 +189,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3h8-DD-VdZ">
-                                <rect key="frame" x="164" y="263" width="64" height="37"/>
+                                <rect key="frame" x="20" y="263" width="64" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="sin">
@@ -294,7 +294,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="VAb-KO-Hmq">
-                                <rect key="frame" x="20" y="263" width="64" height="37"/>
+                                <rect key="frame" x="164" y="263" width="64" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Enter">
@@ -429,9 +429,20 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Graph" id="nPi-tU-FsV"/>
+                    <navigationItem key="navigationItem" title="Graph" id="nPi-tU-FsV">
+                        <barButtonItem key="rightBarButtonItem" style="plain" id="PZp-LD-7NF">
+                            <switch key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="e9d-wt-IwL">
+                                <rect key="frame" x="236" y="8" width="79" height="27"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <connections>
+                                    <action selector="switchGraphMethod:" destination="89I-WH-M9U" eventType="valueChanged" id="M2r-qh-6qU"/>
+                                </connections>
+                            </switch>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="descriptionOfProgram" destination="PM4-m7-0dF" id="W3K-bx-JcL"/>
+                        <outlet property="graphMethodSwitch" destination="e9d-wt-IwL" id="htf-nI-3D4"/>
                         <outlet property="graphView" destination="ptM-Ga-GLP" id="NUV-lE-T9P"/>
                     </connections>
                 </viewController>
@@ -476,7 +487,9 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GraphViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="descriptionOfProgram" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="graphMethodSwitch" candidateClass="UISwitch"/>
                 <relationship kind="outlet" name="graphView" candidateClass="GraphView"/>
+                <relationship kind="outlet" name="toolbar" candidateClass="UIToolbar"/>
             </relationships>
         </class>
     </classes>

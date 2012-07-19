@@ -12,5 +12,6 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *descriptionOfProgram;
 @property (nonatomic, strong) NSArray *programToGraph;
+@property (weak, nonatomic) IBOutlet UISwitch *graphMethodSwitch;
 
 @end

@@ -23,6 +23,7 @@
 @synthesize origin = _origin;
 @synthesize scale = _scale;
 @synthesize originIsInitialized = _originIsInitialized;
+@synthesize graphMethod = _graphMethod;
 
 - (void)setup
 {
@@ -81,6 +82,19 @@
     [self setNeedsDisplay];
 }
 
+- (GraphMethod)graphMethod
+{
+    return _graphMethod;
+}
+
+- (void)setGraphMethod:(GraphMethod)graphMethod
+{
+    if (_graphMethod != graphMethod){
+        _graphMethod = graphMethod;
+        [self setNeedsDisplay];
+    }
+}
+
 - (void)pinch:(UIPinchGestureRecognizer *)gesture
 {
     if ((gesture.state == UIGestureRecognizerStateChanged) ||
@@ -119,7 +133,7 @@
     NSDictionary *variables;
     BOOL startPointInitialized = NO;
 
-    for (float i = rect.origin.x; i < rect.size.width; i += 1 / self.contentScaleFactor)
+    for (float i = rect.origin.x; i < rect.size.width; i += 1.0 / self.contentScaleFactor)
     {
         // Translate x into translated and scaled value 
         x = (i - self.origin.x) / self.scale;
@@ -144,9 +158,11 @@
                 CGContextMoveToPoint(context, x, result);
                 startPointInitialized = YES;
             }
-            CGContextAddLineToPoint(context, x, result);
             
-            //CGContextFillRect(context, CGRectMake(x,result,1,1));
+            if (self.graphMethod == Line)
+                CGContextAddLineToPoint(context, x, result);
+            else
+                CGContextFillRect(context, CGRectMake(x,result,1,1));
         }
     }
     

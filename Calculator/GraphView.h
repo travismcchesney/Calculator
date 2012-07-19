@@ -14,10 +14,16 @@
 - (float)resultForVariables:(NSDictionary *)variables;
 @end
 
+typedef enum {
+    Pixel,
+    Line
+} GraphMethod;
+
 @interface GraphView : UIView
 
 - (void)resetOrigin;
 
+@property (nonatomic) GraphMethod graphMethod;
 @property (nonatomic) CGPoint origin;
 @property (nonatomic) float scale;
 @property (nonatomic, weak) IBOutlet id <GraphViewDataSource> dataSource;

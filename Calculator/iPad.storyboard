@@ -21,15 +21,27 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="QAA-zg-28s">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                                <rect key="frame" x="0.0" y="-2" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items/>
+                                <items>
+                                    <barButtonItem style="plain" id="Fm9-gb-qRT">
+                                        <switch key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" on="YES" id="7k3-bu-YDy">
+                                            <rect key="frame" x="12" y="9" width="79" height="27"/>
+                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                            <accessibility key="accessibilityConfiguration" label="Graph Method Line"/>
+                                            <connections>
+                                                <action selector="switchGraphMethod:" destination="iXV-OJ-ZhU" eventType="valueChanged" id="8GH-B4-f3G"/>
+                                            </connections>
+                                        </switch>
+                                    </barButtonItem>
+                                </items>
                             </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
                     <connections>
+                        <outlet property="graphMethodSwitch" destination="7k3-bu-YDy" id="UiU-e7-oNb"/>
                         <outlet property="graphView" destination="gCW-EL-Gcs" id="E6G-bk-x9l"/>
                         <outlet property="toolbar" destination="QAA-zg-28s" id="8CG-sW-hTf"/>
                     </connections>
@@ -249,7 +261,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="gKA-Ef-S3f">
-                                <rect key="frame" x="164" y="263" width="64" height="37"/>
+                                <rect key="frame" x="20" y="263" width="64" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="sin">
@@ -354,7 +366,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Eoz-s3-Zif">
-                                <rect key="frame" x="20" y="263" width="64" height="37"/>
+                                <rect key="frame" x="164" y="263" width="64" height="37"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Enter">
